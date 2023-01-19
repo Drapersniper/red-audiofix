@@ -1,6 +1,7 @@
+from redbot.core.bot import Red
+
+from audiohotfix.main import AudioHotFix
 
 
-
-async def setup(bot):
-
-    await bot.add_cog(AudioHotFix(bot))
+def setup(bot: Red):
+    bot.add_cog(AudioHotFix(bot))
