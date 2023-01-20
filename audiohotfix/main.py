@@ -21,7 +21,7 @@ class AudioHotFix(commands.Cog):
         else:
             self.attribute_name = "managed_node_controller"
         self.read_buffer_task = None
-        self.monitor = asyncio.create_task(self.task_restart)
+        self.monitor = asyncio.create_task(self.task_restart())
         self.cog_monitor_task = None
         self.buffer_exit = False
 
@@ -30,13 +30,13 @@ class AudioHotFix(commands.Cog):
             while not (__:= self.bot.get_cog("Audio")):
                 await asyncio.sleep(1)
             if self.read_buffer_task is not None:
-                self.read_buffer_task = asyncio.create_task(self.read_buffer)
+                self.read_buffer_task = asyncio.create_task(self.read_buffer())
             while (__:= self.bot.get_cog("Audio")):
                 await asyncio.sleep(1)
                 if self.buffer_exit is True:
                     if self.read_buffer_task is not None:
                         self.read_buffer_task.cancel()
-                    self.read_buffer_task = asyncio.create_task(self.read_buffer)
+                    self.read_buffer_task = asyncio.create_task(self.read_buffer())
             self.read_buffer_task = None
         except Exception as exc:
             self.logger.info("Error in loop_for_cog", exc_info=exc)
@@ -65,7 +65,7 @@ class AudioHotFix(commands.Cog):
             while True:
                 if self.cog_monitor_task is None:
                     await self.bot.wait_until_red_ready()
-                    self.cog_monitor_task = asyncio.create_task(self.loop_for_cog)
+                    self.cog_monitor_task = asyncio.create_task(self.loop_for_cog())
                 await asyncio.sleep(1)
         except Exception as exc:
             self.logger.info("Error in task_restart", exc_info=exc)
