@@ -5,6 +5,7 @@ from redbot.core.bot import Red
 from redbot.core.commands import commands
 from redbot import VersionInfo, version_info
 
+
 class AudioHotFix(commands.Cog):
 
     def __init__(self, bot: Red):
@@ -23,7 +24,7 @@ class AudioHotFix(commands.Cog):
         self.cog_monitor_task = None
         self.buffer_exit = False
 
-    def loop_for_cog(self):
+    async def loop_for_cog(self):
         while not (__:= self.bot.get_cog("Audio")):
             await asyncio.sleep(1)
         if self.loop is not None:
@@ -37,7 +38,7 @@ class AudioHotFix(commands.Cog):
         self.loop = None
 
 
-    def read_buffer(self):
+    async def read_buffer(self):
         self.buffer_exit = False
         while True:
             with contextlib.suppress(Exception):
@@ -50,7 +51,7 @@ class AudioHotFix(commands.Cog):
                     pass
         self.buffer_exit = True
 
-    def task_restart(self):
+    async def task_restart(self):
         while True:
             if self.cog_monitor_task is None:
                 await self.bot.wait_until_red_ready()
